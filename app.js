@@ -7,13 +7,14 @@ const app = express();
 
 // Middlewares
 app.use(cors({
-  origin: 'http://localhost:3000', 
+  origin: true, 
   credentials: true,
 }));
 app.use(express.json());
 app.use(cookieParser());
 
-// Rutas (por ahora ninguna)
+const authRoutes = require('./src/routes/authRoutes');
+app.use('/api', authRoutes);
 app.get('/', (req, res) => {
   res.send('Servidor de Distribuidora funcionando 🚀');
 });
