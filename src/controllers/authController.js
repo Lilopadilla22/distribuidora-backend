@@ -15,6 +15,7 @@ const registerUser = async (req, res) => {
       fecha_cumpleanos,
       cc,
       nombre_negocio,
+      role,
     } = req.body;
 
     const userExists = await User.findOne({ email });
@@ -35,6 +36,7 @@ const registerUser = async (req, res) => {
       fecha_cumpleanos,
       cc,
       nombre_negocio,
+      role: role || 'client'
     });
 
     const userToReturn = { ...newUser._doc };
