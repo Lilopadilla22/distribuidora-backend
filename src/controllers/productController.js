@@ -84,10 +84,23 @@ const cambiarDisponibilidad = async (req, res) => {
   }
 };
 
+const obtenerRecomendados = async (req, res) => {
+  try {
+    const productos = await Product.find({ recomendado: true, disponible: true }).populate('categoria', 'nombre');
+    res.json(productos);
+  } catch (error) {
+    const errMsg = error instanceof Error ? error.message : 'Error desconocido';
+    console.error('❌ Error al obtener recomendados:', errMsg);
+    res.status(500).json({ message: 'error en recomendados', error: errMsg });
+  }
+};
+
+
 
 
 module.exports = {
   crearProducto,
   listarProductos,
-  cambiarDisponibilidad
+  cambiarDisponibilidad,
+  obtenerRecomendados
 };

@@ -3,7 +3,8 @@ const router = express.Router();
 const {
   crearProducto,
   listarProductos,
-  cambiarDisponibilidad
+  cambiarDisponibilidad,
+  obtenerRecomendados
 } = require('../controllers/productController');
 
 router.post('/', crearProducto);
@@ -11,6 +12,8 @@ router.post('/', crearProducto);
 router.get('/', listarProductos);
 
 router.put('/:id/estado', cambiarDisponibilidad); 
+
+router.get('/recomendados', obtenerRecomendados);
 
 
 module.exports = router;
