@@ -87,7 +87,28 @@ const loginUser = async (req, res) => {
   }
 };
 
+const getProfile = async (req, res) => {
+  try {
+    console.log('Obteniendo perfil del usuario:', req.user.id);
+    
+    const user = await User.findById(req.user.id).select('-password');
+    
+    if (!user) {
+      return res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+
+    res.json({
+      message: 'Perfil obtenido exitosamente',
+      user
+    });
+  } catch (error) {
+    console.error('Error al obtener perfil:', error);
+    res.status(500).json({ message: 'Error del servidor' });
+  }
+};
+
 module.exports = {
   registerUser,
   loginUser,
+  getProfile
 };
