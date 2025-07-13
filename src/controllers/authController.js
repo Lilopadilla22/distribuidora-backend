@@ -80,7 +80,7 @@ const loginUser = async (req, res) => {
     const userToReturn = { ...user._doc };
     delete userToReturn.password;
 
-    res.json({ user: userToReturn });
+    res.json({ user: userToReturn, token });
   } catch (error) {
     console.error('Error al hacer login:', error);
     res.status(500).json({ message: 'Error del servidor' });
