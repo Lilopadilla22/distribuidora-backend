@@ -54,7 +54,7 @@ const listarPedidos = async (req, res) => {
   
       const pedidos = await Order.find({ usuario: userId })
         .populate('productos.producto', 'nombre unidad precio_por_kilo precio_por_unidad')
-        .sort({ createdAt: -1 }); // más recientes primero
+        .sort({ createdAt: -1 }); 
   
       res.json(pedidos);
     } catch (error) {
@@ -159,13 +159,44 @@ const listarPedidos = async (req, res) => {
       res.status(500).json({ message: 'Error al actualizar pedido', error: errMsg });
     }
   };
-  
-  
-  
+
+const listarTodasLasOrdenes = async (req, res) => {
+  try {
+    const ordenes = await Order.find()
+      .populate('usuario', 'nombre email')
+      .populate('productos.producto', 'nombre precio_por_kilo precio_por_unidad unidad');
+
+    res.json(ordenes);
+  } catch (error) {
+    res.status(500).json({ message: 'Error al obtener todas las órdenes', error: error.message });
+  }
+};
+
+const actualizarEstadoPedido = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { estado } = req.body;
+
+    const pedido = await Order.findById(id);
+    if (!pedido) {
+      return res.status(404).json({ message: 'Pedido no encontrado' });
+    }
+
+    pedido.estado = estado;
+    await pedido.save();
+
+    res.json({ message: 'Estado actualizado correctamente', pedido });
+  } catch (error) {
+    res.status(500).json({ message: 'Error al actualizar estado', error: error.message });
+  }
+};
+
 
 module.exports = {
   crearPedido,
   listarPedidos,
   cancelarPedido,
-  actualizarPedido
+  actualizarPedido,
+  listarTodasLasOrdenes,
+  actualizarEstadoPedido
 };
