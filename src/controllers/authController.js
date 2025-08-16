@@ -107,8 +107,18 @@ const getProfile = async (req, res) => {
   }
 };
 
+const obtenerUsuarios = async (req, res) => {
+  try {
+    const usuarios = await User.find().select('-password'); 
+    res.json(usuarios);
+  } catch (error) {
+    res.status(500).json({ message: 'Error al obtener los usuarios', error: error.message });
+  }
+};
+
 module.exports = {
   registerUser,
   loginUser,
-  getProfile
+  getProfile,
+  obtenerUsuarios
 };
